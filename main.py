@@ -21,18 +21,16 @@ async def read_items():
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
-    return db[item_id]
+    return {"item_id" : item_id}
 
 @app.post("/items")
 async def post_item(item: Item):
     db.append(item.dict())
     return db[-1]
 
-# @app.delete('/items/{item_id}')
-# async def delete_item(item_id: int):
-#     for item in db:
-#         if item['id'] == item_id:
-#             print(db.index(item))
-#             return db
-#         else:
-#             return {"no item with that id exists"}
+@app.delete('/items/{item_id}')
+async def delete_item(item_id: int):
+    for item in db:      
+        if item_id == item['id']:           
+            db.pop(db.index(item))
+            return db

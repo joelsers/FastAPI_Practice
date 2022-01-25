@@ -28,9 +28,20 @@ async def post_item(item: Item):
     db.append(item.dict())
     return db[-1]
 
+@app.patch("/items")
+async def patch_item(item: Item):
+    for db_item in db:
+        if item.id == db_item['id']:
+            db_item['name'] = item.name
+            return db_item
+        else:
+            return ('no item with that id')
+
 @app.delete('/items/{item_id}')
 async def delete_item(item_id: int):
     for item in db:      
-        if item_id == item['id']:           
+        if item_id == item['id']:
             db.pop(db.index(item))
             return db
+        else:
+            return ('no item with that id')
